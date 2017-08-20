@@ -68,32 +68,35 @@ function fileCSVExists(){
     return $csv->data;
 }
 
-#Обработка http ответов
+#Обработка http ответов, взял с вики
 function errorCodeTranslator($errorStatusCode){
     switch($errorStatusCode) {
-        case 401:
-            $errorStatus="401: Login failure.  Try logging out and back in.  Password are ONLY used when posting.";
-            break;
         case 400:
-            $errorStatus="400: Invalid request.  You may have exceeded your rate limit.";
+            $errorStatus="400 Bad Request — сервер обнаружил в запросе клиента синтаксическую ошибку.";
+            break;
+        case 401:
+            $errorStatus="401 Unauthorized — для доступа к запрашиваемому ресурсу требуется аутентификация.";
+            break;
+        case 403:
+            $errorStatus="403 Forbidden — сервер понял запрос, но он отказывается его выполнять из-за ограничений в доступе для клиента к указанному ресурсу.";
             break;
         case 404:
-            $errorStatus="404: Not found.  This shouldn't happen.  Please let me know what happened using the feedback link above.";
+            $errorStatus="404: Not found. Не существует такой страницы.";
             break;
         case 500:
-            $errorStatus="500: Twitter servers replied with an error. Hopefully they'll be OK soon!";
+            $errorStatus="500 Internal Server Error — любая внутренняя ошибка сервера, которая не входит в рамки остальных ошибок класса. ";
             break;
         case 502:
-            $errorStatus="502: Twitter servers may be down or being upgraded. Hopefully they'll be OK soon!";
+            $errorStatus="502 Bad Gateway — сервер, выступая в роли шлюза или прокси-сервера, получил недействительное ответное сообщение от вышестоящего сервера.";
             break;
         case 503:
-            $errorStatus="503: Twitter service unavailable. Hopefully they'll be OK soon!";
+            $errorStatus="503 Service Unavailable — сервер временно не имеет возможности обрабатывать запросы по техническим причинам (обслуживание, перегрузка и прочее).";
             break;
         case 504:
-            $errorStatus="504: Twitter service unavailable. Hopefully they'll be OK soon!";
+            $errorStatus="504 Gateway Timeout — сервер в роли шлюза или прокси-сервера не дождался ответа от вышестоящего сервера для завершения текущего запроса. ";
             break;
         default:
-            $errorStatus="Undocumented error: " . $errorStatusCode;
+            $errorStatus="Недокументированная ошибка: " . $errorStatusCode;
             break;
     }
     return $errorStatus;
